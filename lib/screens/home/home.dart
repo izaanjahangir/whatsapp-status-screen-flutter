@@ -22,6 +22,36 @@ const List<Map<String, String>> DUMMY_USERS = [
     "username": "Doctor Strange",
     "timestamp": "just now",
     "avatar": "assets/images/user-2.jpeg"
+  },
+  {
+    "username": "Wanda Maximoff",
+    "timestamp": "just now",
+    "avatar": "assets/images/wanda.jpeg"
+  },
+  {
+    "username": "Natasha Romanoff",
+    "timestamp": "just now",
+    "avatar": "assets/images/black-widow.jpeg"
+  },
+  {
+    "username": "Bruce Banner",
+    "timestamp": "just now",
+    "avatar": "assets/images/bruce-banner.jpeg"
+  },
+  {
+    "username": "Odin",
+    "timestamp": "just now",
+    "avatar": "assets/images/odin.jpeg"
+  },
+  {
+    "username": "Surter",
+    "timestamp": "just now",
+    "avatar": "assets/images/surter.jpeg"
+  },
+  {
+    "username": "Dormammu",
+    "timestamp": "just now",
+    "avatar": "assets/images/dormamu.jpeg"
   }
 ];
 
