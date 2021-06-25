@@ -5,15 +5,23 @@ class Avatar extends StatelessWidget {
   final bool disabled;
   final bool showAddIcon;
   final String avatarPath;
+  final Function onTap;
+  final double size;
 
   Avatar(
       {this.disabled = false,
+      this.onTap,
+      this.size = 50,
       @required this.avatarPath,
       this.showAddIcon = false});
 
   @override
   Widget build(BuildContext context) {
-    void handleTap() {}
+    void handleTap() {
+      if (onTap != null) {
+        onTap();
+      }
+    }
 
     return AbsorbPointer(
       absorbing: disabled,
@@ -25,8 +33,8 @@ class Avatar extends StatelessWidget {
               ClipOval(
                 child: Image.asset(
                   avatarPath,
-                  width: 50,
-                  height: 50,
+                  width: size,
+                  height: size,
                   fit: BoxFit.cover,
                   alignment: Alignment.center,
                 ),
