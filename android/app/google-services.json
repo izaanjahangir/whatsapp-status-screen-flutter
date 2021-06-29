@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "104443831051",
+    "project_id": "izaan-whatsapp-status-screen",
+    "storage_bucket": "izaan-whatsapp-status-screen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104443831051:android:0b2a7ee75af836ad4ff80e",
+        "android_client_info": {
+          "package_name": "com.example.whatsapp_status_screen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104443831051-c6qokknh903vmerqg9ebqbuuo9ocbave.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsVRZFOMjJoWcicUP2P3Io1UGvq9mn7LU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104443831051-c6qokknh903vmerqg9ebqbuuo9ocbave.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "104443831051-6ov8ml84jof9mp4fasan64cdsc409l4r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.whatsappStatusScreen"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
