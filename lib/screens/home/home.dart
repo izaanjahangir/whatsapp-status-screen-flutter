@@ -105,8 +105,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Map arguments = ModalRoute.of(context).settings.arguments;
-    CollectionReference statuses =
-        FirebaseFirestore.instance.collection('statuses');
+
+    final Stream<QuerySnapshot> _statusesStream = FirebaseFirestore.instance
+        .collection('statuses')
+        .orderBy("timestamp", descending: true)
+        .snapshots();
 
     void navigateToStatusView(Map data) {
       Navigator.push(
@@ -201,8 +204,8 @@ class _HomeState extends State<Home> {
                 Container(
                   margin: const EdgeInsets.only(top: 5),
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: FutureBuilder<QuerySnapshot>(
-                    future: statuses.get(),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _statusesStream,
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
