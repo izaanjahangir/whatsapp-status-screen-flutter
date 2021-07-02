@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:whatsapp_status_screen/config/theme_colors.dart';
 
 class Login extends StatelessWidget {
@@ -12,11 +15,27 @@ class Login extends StatelessWidget {
       Navigator.pushNamed(context, "/register");
     }
 
-    void handleSubmit() {
-      // if (_formKey.currentState.validate()) {
-      //   print("email " + emailController.text);
-      //   print("password " + passwordController.text);
-      // }
+    void handleSubmit() async {
+      if (_formKey.currentState.validate()) {
+        CollectionReference users =
+            FirebaseFirestore.instance.collection('users');
+        try {
+          EasyLoading.show(status: 'Logging in...');
+          UserCredential userCredential = await FirebaseAuth.instance
+              .signInWithEmailAndPassword(
+                  email: emailController.text,
+                  password: passwordController.text);
+          DocumentSnapshot userResponse =
+              await users.doc(userCredential.user.uid).get();
+
+          Map<String, dynamic> user = userResponse.data();
+
+          EasyLoading.showSuccess('User logged in');
+        } catch (e) {
+          print(e);
+          EasyLoading.showError(e.message);
+        }
+      }
       Navigator.pushNamed(context, "/");
     }
 
