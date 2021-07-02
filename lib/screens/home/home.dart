@@ -122,7 +122,7 @@ class _HomeState extends State<Home> {
 
     void openImagePicker() async {
       try {
-        EasyLoading.show(status: 'Logging in...');
+        EasyLoading.show(status: 'Uploading status');
 
         final PickedFile pickedFile =
             await ImagePicker().getImage(source: ImageSource.gallery);
@@ -150,7 +150,7 @@ class _HomeState extends State<Home> {
           "timestamp": FieldValue.serverTimestamp()
         });
 
-        EasyLoading.showSuccess('Image uploaded');
+        EasyLoading.showSuccess('Status uploaded');
       } catch (e) {
         print(e);
         EasyLoading.showError("Some error");

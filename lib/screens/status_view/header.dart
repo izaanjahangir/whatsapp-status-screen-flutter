@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_status_screen/components/avatar/avatar.dart';
 import 'package:whatsapp_status_screen/components/icon_button/icon_button.dart'
@@ -15,6 +16,19 @@ class Header extends StatelessWidget {
       Navigator.pop(context);
     }
 
+    String getTimestamp() {
+      // Timestamp timestamp = data["timestamp"] as Timestamp;
+      // if (timestamp != null) {
+      //   DateTime dt = DateTime.fromMillisecondsSinceEpoch(
+      //       timestamp.millisecondsSinceEpoch);
+      //   Duration duration = DateTime.now().difference(dt);
+
+      //   return duration.inMinutes.toString() + " minutes";
+      // }
+
+      return "";
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
@@ -25,7 +39,7 @@ class Header extends StatelessWidget {
           ),
           Avatar(
             disabled: true,
-            avatarPath: data["avatar"],
+            avatarPath: data["image"],
             size: 35,
           ),
           SizedBox(
@@ -42,7 +56,7 @@ class Header extends StatelessWidget {
                 height: 3,
               ),
               Text(
-                data["timestamp"],
+                getTimestamp(),
                 style: TextStyle(color: ThemeColors.white, fontSize: 12),
               )
             ],

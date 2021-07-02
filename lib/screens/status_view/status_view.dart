@@ -22,7 +22,7 @@ class StatusView extends StatelessWidget {
               children: [
                 Align(
                     alignment: Alignment.center,
-                    child: Image.asset(data["statuses"][0])),
+                    child: Image.network(data["image"])),
                 Positioned(
                     child: Header(data: data), top: 0, width: size.width),
               ],
