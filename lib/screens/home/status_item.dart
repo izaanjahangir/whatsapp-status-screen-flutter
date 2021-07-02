@@ -22,7 +22,11 @@ class StatusItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String getTimestamp() {
-      Timestamp timestamp = data["test"] as Timestamp;
+      if (isMyStatus) {
+        return "Add to my status";
+      }
+
+      Timestamp timestamp = data["timestamp"] as Timestamp;
       if (timestamp != null) {
         DateTime dt = DateTime.fromMillisecondsSinceEpoch(
             timestamp.millisecondsSinceEpoch);

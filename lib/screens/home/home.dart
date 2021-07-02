@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:whatsapp_status_screen/config/theme_colors.dart';
 import 'package:whatsapp_status_screen/screens/home/status_item.dart';
 import 'package:whatsapp_status_screen/screens/status_view/status_view.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as pathLib;
 
 const List<Map> DUMMY_USERS = [
   {
@@ -98,7 +104,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    // Map arguments = ModalRoute.of(context).settings.arguments;
+    Map arguments = ModalRoute.of(context).settings.arguments;
     CollectionReference statuses =
         FirebaseFirestore.instance.collection('statuses');
 
@@ -109,6 +115,43 @@ class _HomeState extends State<Home> {
               builder: (BuildContext context) => StatusView(
                     data: data,
                   )));
+    }
+
+    void openImagePicker() async {
+      try {
+        EasyLoading.show(status: 'Logging in...');
+
+        final PickedFile pickedFile =
+            await ImagePicker().getImage(source: ImageSource.gallery);
+        firebase_storage.FirebaseStorage storage =
+            firebase_storage.FirebaseStorage.instance;
+        File file = File(pickedFile.path);
+        String basename = pathLib.basename(pickedFile.path);
+
+        await storage.ref().child("images").child(basename).putFile(file);
+        String url = await storage
+            .ref()
+            .child("images")
+            .child(basename)
+            .getDownloadURL();
+
+        CollectionReference statuses =
+            FirebaseFirestore.instance.collection('statuses');
+
+        Map user = arguments["user"];
+
+        await statuses.add({
+          "uid": user["uid"],
+          "username": user["fullName"],
+          "image": url,
+          "timestamp": FieldValue.serverTimestamp()
+        });
+
+        EasyLoading.showSuccess('Image uploaded');
+      } catch (e) {
+        print(e);
+        EasyLoading.showError("Some error");
+      }
     }
 
     return Scaffold(
@@ -135,6 +178,7 @@ class _HomeState extends State<Home> {
                 ),
                 Container(
                   child: StatusItem(
+                    onTap: openImagePicker,
                     data: myData,
                     isMyStatus: true,
                   ),
