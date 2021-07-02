@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_status_screen/components/avatar/avatar.dart';
 import 'package:whatsapp_status_screen/config/theme_colors.dart';
@@ -20,6 +21,19 @@ class StatusItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String getTimestamp() {
+      Timestamp timestamp = data["test"] as Timestamp;
+      if (timestamp != null) {
+        DateTime dt = DateTime.fromMillisecondsSinceEpoch(
+            timestamp.millisecondsSinceEpoch);
+        Duration duration = DateTime.now().difference(dt);
+
+        return duration.inMinutes.toString() + " minutes";
+      }
+
+      return "";
+    }
+
     BoxDecoration getContainerDecoration() {
       final BoxDecoration defaultContainerDecoration = BoxDecoration();
       return containerDecoration == null
@@ -44,7 +58,7 @@ class StatusItem extends StatelessWidget {
               height: 3,
             ),
             Text(
-              data["timestamp"],
+              getTimestamp(),
               style: TextStyle(color: ThemeColors.grey, fontSize: 13),
             ),
           ],
@@ -67,7 +81,7 @@ class StatusItem extends StatelessWidget {
           children: [
             Avatar(
               disabled: true,
-              avatarPath: data["statuses"][0],
+              avatarPath: data["image"],
               showAddIcon: isMyStatus,
             ),
             SizedBox(width: 10),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_status_screen/config/theme_colors.dart';
@@ -77,19 +78,30 @@ const List<Map> DUMMY_USERS = [
   }
 ];
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final BoxDecoration statusItemDecoration = BoxDecoration(
       border: Border(bottom: BorderSide(color: ThemeColors.grey, width: 0.2)));
+
   final Map myData = {
     "username": "My Status",
     "timestamp": "Add to my status",
-    "avatar": "assets/images/me.JPG",
+    "image":
+        "https://m.media-amazon.com/images/M/MV5BMTczNTI2ODUwOF5BMl5BanBnXkFtZTcwMTU0NTIzMw@@._V1_.jpg",
     "statuses": ["assets/images/me.JPG"],
     "tag": "my-status"
   };
 
   @override
   Widget build(BuildContext context) {
+    // Map arguments = ModalRoute.of(context).settings.arguments;
+    CollectionReference statuses =
+        FirebaseFirestore.instance.collection('statuses');
+
     void navigateToStatusView(Map data) {
       Navigator.push(
           context,
@@ -145,18 +157,36 @@ class Home extends StatelessWidget {
                 Container(
                   margin: const EdgeInsets.only(top: 5),
                   padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    children: [
-                      ...DUMMY_USERS
-                          .map((e) => StatusItem(
-                                onTap: () {
-                                  navigateToStatusView(e);
-                                },
-                                data: e,
-                                containerDecoration: statusItemDecoration,
-                              ))
-                          .toList(),
-                    ],
+                  child: FutureBuilder<QuerySnapshot>(
+                    future: statuses.get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return Text("Something went wrong");
+                      }
+
+                      if (snapshot.hasData && snapshot.data.size <= 0) {
+                        return Text("Data does not exist");
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text("Loading");
+                      }
+
+                      return Column(
+                        children: [
+                          ...snapshot.data.docs
+                              .map((e) => StatusItem(
+                                    onTap: () {
+                                      navigateToStatusView(e.data());
+                                    },
+                                    data: e.data(),
+                                    containerDecoration: statusItemDecoration,
+                                  ))
+                              .toList(),
+                        ],
+                      );
+                    },
                   ),
                   decoration: BoxDecoration(
                       color: ThemeColors.lightBlack,

@@ -31,7 +31,7 @@ class Avatar extends StatelessWidget {
           child: Stack(
             children: [
               ClipOval(
-                child: Image.asset(
+                child: Image.network(
                   avatarPath,
                   width: size,
                   height: size,

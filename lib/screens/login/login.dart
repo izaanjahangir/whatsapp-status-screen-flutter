@@ -8,8 +8,10 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final TextEditingController emailController = TextEditingController();
-    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController emailController =
+        TextEditingController(text: "izaanjahangir2@gmail.com");
+    final TextEditingController passwordController =
+        TextEditingController(text: "12345678");
 
     void navigateToRegister() {
       Navigator.pushNamed(context, "/register");
@@ -28,15 +30,18 @@ class Login extends StatelessWidget {
           DocumentSnapshot userResponse =
               await users.doc(userCredential.user.uid).get();
 
-          Map<String, dynamic> user = userResponse.data();
+          Map<String, dynamic> user = {
+            ...userResponse.data(),
+            "uid": userResponse.id
+          };
 
           EasyLoading.showSuccess('User logged in');
+          Navigator.pushNamed(context, "/", arguments: {"user": user});
         } catch (e) {
           print(e);
           EasyLoading.showError(e.message);
         }
       }
-      Navigator.pushNamed(context, "/");
     }
 
     return Scaffold(
